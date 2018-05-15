@@ -1,0 +1,24 @@
+{
+  "name": "tdl",
+  "version": "1.0.0",
+  "description": "tile download, again but more sophisticated hopefully",
+  "main": "tdl.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hfu/tdl.git"
+  },
+  "author": "",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/hfu/tdl/issues"
+  },
+  "homepage": "https://github.com/hfu/tdl#readme",
+  "dependencies": {
+    "config": "^1.30.0",
+    "hjson": "^3.1.1",
+    "node-fetch": "^2.1.2"
+  }
+}
