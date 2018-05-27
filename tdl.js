@@ -24,7 +24,7 @@ const g = function* gfn() {
 const tdl = function(v) {
   if (v.done) {
   } else {
-    // console.log(v.value.url)
+    // console.error(v.value.url)
     fetch(v.value.url)
       .then(res => res.ok ? res.json() : false)
       .then(json => {
