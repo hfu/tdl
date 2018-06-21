@@ -1,5 +1,8 @@
 const config = require('config')
 const fetch = require('node-fetch')
+const https = require('https')
+const zlib = require('zlib')
+const opts = { agent: new https.Agent({ keepAlive: true }) }
 
 const g = function* gfn() {
   const Z = config.get('Z')
@@ -36,7 +39,7 @@ const tdl = function(v) {
     // console.error(v.value.url)
     switch (v.value.ext) {
     case 'geojson':
-      fetch(v.value.url)
+      fetch(v.value.url, opts)
         .then(res => res.ok ? res.json() : false)
         .then(json => {
           if (json) {
@@ -61,19 +64,19 @@ const tdl = function(v) {
         })
       break
     case 'pbf':
-      fetch(v.value.url)
+      fetch(v.value.url, opts)
         .then(res => {
           if (!res.ok) return false
-          if (res.headers.get('content-encoding') === 'gzip') {
-            return res.buffer() 
-          } else {
-            throw new Error('plain binary not supported yet.')
-          }
+          return res.buffer() 
         })
         .then(buf => {
           console.log(JSON.stringify({
-            z: v.value.z, x: v.value.x, y: v.value.y, buffer: buf.toString('base64')
+            z: v.value.z, 
+            x: v.value.x, 
+            y: v.value.y, 
+            buffer: buf ? zlib.gzipSync(buf).toString('base64') : null
           }))
+          console.error(Math.round(process.memoryUsage().heapUsed / 1024 / 1024))
           tdl(g.next())
         }).catch(err => {
           v.value.ttl--
